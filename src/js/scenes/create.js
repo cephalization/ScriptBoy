@@ -46,9 +46,8 @@ const generatePlatforms = ctx => {
     .create(400, 568, 'ground')
     .setScale(1.2)
     .refreshBody();
-  platforms.create(500, 400, 'ground').setScale(0.5);
-  platforms.create(200, 300, 'ground').setScale(0.5);
-  platforms.create(600, 200, 'ground').setScale(0.5);
+  platforms.create(770, 375, 'ground');
+  platforms.create(200, 200, 'ground');
 
   return platforms;
 };
@@ -60,7 +59,7 @@ const generatePlatforms = ctx => {
  */
 const generatePlayer = ctx => {
   // Setup player and physics
-  const player = ctx.physics.add.sprite(42, 252, 'hero');
+  const player = ctx.physics.add.sprite(40, 400, 'hero');
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
 
@@ -107,6 +106,9 @@ export default async function() {
 
     // Setup the player
     const player = generatePlayer(this);
+
+    // Add collision between player and platforms
+    this.physics.add.collider(player, platforms);
   } catch (e) {
     throw new Error(`Could not load game assets! ${e}`);
   }
