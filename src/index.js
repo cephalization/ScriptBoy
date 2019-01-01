@@ -15,12 +15,19 @@ const config = {
   width: RESOLUTION[0],
   height: RESOLUTION[1],
   scene: {
-      preload,
-      create,
-      update,
+    preload,
+    create,
+    update,
   },
-  parent: 'game'
-}
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false,
+    },
+  },
+  parent: 'game',
+};
 
 // Initialize the game
 const game = new Phaser.Game(config);
