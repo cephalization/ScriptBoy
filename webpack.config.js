@@ -43,6 +43,11 @@ const config = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, 'src/'),
+    }
+  },
   mode: 'development',
   devServer: {
     contentBase: './dist'

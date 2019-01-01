@@ -3,15 +3,23 @@
  *
  * 2019
  */
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-const PlayState = {
+import preload from './js/scenes/preload';
+import create from './js/scenes/create';
+import update from './js/scenes/update';
 
-};
+const config = {
+  type: Phaser.AUTO,
+  width: 960,
+  height: 600,
+  scene: {
+      preload,
+      create,
+      update,
+  },
+  parent: 'game'
+}
 
 // Initialize the game
-window.onload = () => {
- const game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
- game.state.add('play', PlayState);
- game.state.start('play');
-}
+const game = new Phaser.Game(config);
