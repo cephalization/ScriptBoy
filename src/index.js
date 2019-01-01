@@ -3,10 +3,15 @@
  *
  * 2019
  */
-const test = ["I work!", "I really work!"];
-const ensureBabelWorks = () => {
-  const [phrase1, phrase2] = test;
-  console.log(`${phrase1} ${phrase2}`);
+import Phaser from "phaser";
+
+const PlayState = {
+
 };
 
-ensureBabelWorks();
+// Initialize the game
+window.onload = () => {
+ const game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
+ game.state.add('play', PlayState);
+ game.state.start('play');
+}
