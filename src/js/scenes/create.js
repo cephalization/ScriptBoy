@@ -1,6 +1,12 @@
-import { log, addImportedImageToScene } from '@src/js/util';
+import {
+  log,
+  addImportedImageToScene,
+  addImportedSpriteToScene,
+  frameDimensions,
+} from '@src/js/util';
 import background from '@src/assets/images/background.png';
 import ground from '@src/assets/images/ground.png';
+import hero from '@src/assets/images/hero.png';
 
 /**
  * Asynchronously load data-uri assets into a scene
@@ -13,6 +19,12 @@ const loadAssets = async function(ctx) {
       /* Load All Assets Here */
       await addImportedImageToScene('bg', background, ctx);
       await addImportedImageToScene('ground', ground, ctx);
+      await addImportedSpriteToScene(
+        'hero',
+        hero,
+        frameDimensions(38, 42),
+        ctx
+      );
 
       log('assets loaded');
       resolve();
@@ -42,6 +54,44 @@ const generatePlatforms = ctx => {
 };
 
 /**
+ * Statically generate a player based off of the 'hero' sprite
+ * per https://phaser.io/tutorials/making-your-first-phaser-3-game/part5
+ * @param {object} ctx
+ */
+const generatePlayer = ctx => {
+  // Setup player and physics
+  const player = ctx.physics.add.sprite(42, 252, 'hero');
+  player.setBounce(0.2);
+  player.setCollideWorldBounds(true);
+
+  // Setup player animations, gonna need tweaking
+  ctx.anims.create({
+    key: 'left',
+    frames: ctx.anims.generateFrameNumbers('hero', {
+      start: 0,
+      end: 3,
+      frameRate: 10,
+      repeat: -1,
+    }),
+  });
+
+  ctx.anims.create({
+    key: 'turn',
+    frames: [{ key: 'hero', frame: 4 }],
+    frameRate: 20,
+  });
+
+  ctx.anims.create({
+    key: 'right',
+    frames: ctx.anims.generateFrameNumbers('hero', { start: 5, end: 8 }),
+    frameRate: 10,
+    repeat: -1,
+  });
+
+  return player;
+};
+
+/**
  * Create the game and additionally load data-uri assets as base64
  */
 export default async function() {
@@ -54,6 +104,9 @@ export default async function() {
 
     // Arrange some platforms
     const platforms = generatePlatforms(this);
+
+    // Setup the player
+    const player = generatePlayer(this);
   } catch (e) {
     throw new Error(`Could not load game assets! ${e}`);
   }
