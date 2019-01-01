@@ -1,0 +1,38 @@
+{
+  "name": "scriptboy",
+  "version": "0.0.1",
+  "description": "JavaScript platforming game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Tests do not exist yet!\" & exit 1",
+    "start": "webpack-dev-server --open",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cephalization/ScriptBoy.git"
+  },
+  "keywords": [
+    "game",
+    "js",
+    "platformer"
+  ],
+  "author": "Anthony Powell <adpowell@mtu.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cephalization/ScriptBoy/issues"
+  },
+  "homepage": "https://github.com/cephalization/ScriptBoy#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
