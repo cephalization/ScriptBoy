@@ -29,5 +29,7 @@ const config = {
   parent: 'game',
 };
 
-// Initialize the game
+// Initialize the game and certain globals
+window.player;
+window.platforms;
 const game = new Phaser.Game(config);

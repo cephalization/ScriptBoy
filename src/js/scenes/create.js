@@ -22,7 +22,7 @@ const loadAssets = async function(ctx) {
       await addImportedSpriteToScene(
         'hero',
         hero,
-        frameDimensions(38, 42),
+        frameDimensions(36, 42),
         ctx
       );
 
@@ -60,15 +60,15 @@ const generatePlatforms = ctx => {
 const generatePlayer = ctx => {
   // Setup player and physics
   const player = ctx.physics.add.sprite(40, 400, 'hero');
-  player.setBounce(0.2);
+  player.setBounce(0.1);
   player.setCollideWorldBounds(true);
 
   // Setup player animations, gonna need tweaking
   ctx.anims.create({
     key: 'left',
     frames: ctx.anims.generateFrameNumbers('hero', {
-      start: 0,
-      end: 3,
+      start: 1,
+      end: 2,
       frameRate: 10,
       repeat: -1,
     }),
@@ -76,13 +76,16 @@ const generatePlayer = ctx => {
 
   ctx.anims.create({
     key: 'turn',
-    frames: [{ key: 'hero', frame: 4 }],
+    frames: [{ key: 'hero', frame: 0 }],
     frameRate: 20,
   });
 
   ctx.anims.create({
     key: 'right',
-    frames: ctx.anims.generateFrameNumbers('hero', { start: 5, end: 8 }),
+    frames: ctx.anims.generateFrameNumbers('hero', {
+      start: 1,
+      end: 2,
+    }),
     frameRate: 10,
     repeat: -1,
   });
@@ -102,13 +105,16 @@ export default async function() {
     this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
     // Arrange some platforms
-    const platforms = generatePlatforms(this);
+    window.platforms = generatePlatforms(this);
 
     // Setup the player
-    const player = generatePlayer(this);
+    window.player = generatePlayer(this);
 
     // Add collision between player and platforms
-    this.physics.add.collider(player, platforms);
+    this.physics.add.collider(window.player, window.platforms);
+
+    // Setup arrow key polling
+    window.cursors = this.input.keyboard.createCursorKeys();
   } catch (e) {
     throw new Error(`Could not load game assets! ${e}`);
   }
