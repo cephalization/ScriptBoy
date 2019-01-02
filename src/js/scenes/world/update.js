@@ -58,11 +58,7 @@ const jumpHandler = (function() {
     const { player, cursors } = ctx;
 
     // Don't duplicate jumping velocity while the up arrow is held
-    // Additionally, prevent double jump until the player starts falling again
-    if (
-      cursors.up.isUp &&
-      (player.body.newVelocity.y > 0.2 || player.body.touching.down)
-    ) {
+    if (cursors.up.isUp) {
       jumpLock = false;
     }
 
