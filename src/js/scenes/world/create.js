@@ -59,15 +59,16 @@ const generatePlatforms = ctx => {
  */
 const generatePlayer = ctx => {
   // Setup player and physics
-  const player = ctx.physics.add.sprite(40, 400, 'hero');
-  player.setBounce(0.15);
-  player.setCollideWorldBounds(true);
+  const player = ctx.physics.add
+    .sprite(40, 400, 'hero')
+    .setBounce(0.15)
+    .setScale(1.5)
+    .setCollideWorldBounds(true);
 
   /* Setup player animations, gonna need tweaking */
   ctx.anims.create({
     key: 'stand',
     frames: [{ key: 'hero', frame: 0 }],
-    frameRate: 20,
   });
 
   ctx.anims.create({
@@ -76,20 +77,24 @@ const generatePlayer = ctx => {
       start: 1,
       end: 2,
     }),
-    frameRate: 10,
+    frameRate: 20,
     repeat: -1,
   });
 
   ctx.anims.create({
     key: 'airborn',
     frames: [{ key: 'hero', frame: 5 }],
-    frameRate: 10,
   });
 
   ctx.anims.create({
     key: 'jump',
     frames: [{ key: 'hero', frame: 3 }],
-    frameRate: 1,
+    repeat: -1,
+  });
+
+  ctx.anims.create({
+    key: 'double jump',
+    frames: [{ key: 'hero', frame: 4 }],
     repeat: -1,
   });
 

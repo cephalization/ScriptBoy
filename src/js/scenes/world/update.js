@@ -21,7 +21,7 @@ const controlHandler = ctx => {
     player.anims.play('walk', true);
   } else {
     player.setVelocityX(0);
-    player.anims.play('stand');
+    player.anims.play('stand', true);
   }
 };
 
@@ -31,12 +31,18 @@ const controlHandler = ctx => {
 const velocityAnimationHandler = ctx => {
   const { player } = ctx;
 
+  // While the player is falling show that animation
   if (player.body.newVelocity.y > 1) {
     player.anims.play('airborn');
   }
 
+  // While the player is moving upwards, show jump animation
   if (player.body.newVelocity.y < 0) {
-    player.anims.play('jump');
+    if (ctx.playerStatus.jump === 'single') {
+      player.anims.play('jump');
+    } else {
+      player.anims.play('double jump');
+    }
   }
 };
 
@@ -63,10 +69,10 @@ const jumpHandler = (function() {
       jumpHeight = JUMP_VELOCITY;
     }
 
-    // When the hero hits the ground, reset the double jump counter
-    // if the hero is in the air, play the jump animation
+    // When the hero hits the ground, reset the jump counter
     if (player.body.touching.down) {
       jumpsLeft = MAXIMUM_JUMPS;
+      ctx.playerStatus.jump = 'none';
     }
 
     // Control jumping, allow jumping until the hero hits the ground again or there are no more
@@ -75,7 +81,13 @@ const jumpHandler = (function() {
       jumpsLeft--;
       jumpLock = true;
       player.body.velocity.y = jumpHeight;
-      log(`Jumping velocity ${jumpHeight}; Jumps left ${jumpsLeft}`);
+
+      // Set jumping status so correct animation can play
+      if (jumpsLeft === 0) {
+        ctx.playerStatus.jump = 'double';
+      } else {
+        ctx.playerStatus.jump = 'single';
+      }
     }
   };
 })();
@@ -88,6 +100,6 @@ export default function() {
 
   // Control movement with arrow keys and trigger animations while moving
   controlHandler(this);
-  velocityAnimationHandler(this);
   jumpHandler(this);
+  velocityAnimationHandler(this);
 }

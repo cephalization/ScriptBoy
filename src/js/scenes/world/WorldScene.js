@@ -11,6 +11,11 @@ export default class WorldScene extends Phaser.Scene {
   constructor() {
     super('world');
     this.player = null;
+    // Track various statuses on the player character
+    this.playerStatus = {
+      // Track which jump the character is on 'single', 'double', etc
+      jump: 'none',
+    };
     this.cursors = null;
     this.platforms = null;
   }
