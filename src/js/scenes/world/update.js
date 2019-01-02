@@ -58,7 +58,11 @@ const jumpHandler = (function() {
     const { player, cursors } = ctx;
 
     // Don't duplicate jumping velocity while the up arrow is held
-    if (cursors.up.isUp) {
+    // Additionally, prevent double jump until the player starts falling again
+    if (
+      cursors.up.isUp &&
+      (player.body.newVelocity.y > 0.2 || player.body.touching.down)
+    ) {
       jumpLock = false;
     }
 
@@ -69,8 +73,9 @@ const jumpHandler = (function() {
       jumpHeight = JUMP_VELOCITY;
     }
 
-    // When the hero hits the ground, reset the jump counter
-    if (player.body.touching.down) {
+    // When the hero hits the ground, reset the double jump counter
+    // if the hero is in the air, play the jump animation
+    if (player.body.touching.down && !jumpLock) {
       jumpsLeft = MAXIMUM_JUMPS;
       ctx.playerStatus.jump = 'none';
     }
