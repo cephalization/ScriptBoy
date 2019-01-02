@@ -13,6 +13,7 @@ const config = {
   width: RESOLUTION[0],
   height: RESOLUTION[1],
   scene: [WorldScene],
+  pixelArt: true,
   physics: {
     default: 'arcade',
     arcade: {
