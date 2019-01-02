@@ -8,7 +8,9 @@ import { log } from '@src/js/util';
 /**
  * Handle the inputs to the player character and the associated animations
  */
-const controlHandler = () => {
+const controlHandler = ctx => {
+  const { player, cursors } = ctx;
+
   if (cursors.left.isDown) {
     player.setVelocityX(-WALKING_VELOCITY);
     player.flipX = true;
@@ -26,7 +28,9 @@ const controlHandler = () => {
 /**
  * Handle the animation of the player character while their velocity changes
  */
-const velocityAnimationHandler = () => {
+const velocityAnimationHandler = ctx => {
+  const { player } = ctx;
+
   if (player.body.newVelocity.y > 1) {
     player.anims.play('airborn');
   }
@@ -44,7 +48,9 @@ const jumpHandler = (function() {
   let jumpsLeft = MAXIMUM_JUMPS;
   let jumpLock = false;
 
-  return () => {
+  return ctx => {
+    const { player, cursors } = ctx;
+
     // Don't duplicate jumping velocity while the up arrow is held
     if (cursors.up.isUp) {
       jumpLock = false;
@@ -75,14 +81,13 @@ const jumpHandler = (function() {
 })();
 
 export default function() {
-  const player = window.player;
-  const cursors = window.cursors;
+  const { player, cursors } = this;
 
   // Prevent the update loop from running when player and cursors are undefined
-  if (player === undefined && cursors === undefined) return;
+  if (player === null || cursors === null) return;
 
   // Control movement with arrow keys and trigger animations while moving
-  controlHandler();
-  velocityAnimationHandler();
-  jumpHandler();
+  controlHandler(this);
+  velocityAnimationHandler(this);
+  jumpHandler(this);
 }

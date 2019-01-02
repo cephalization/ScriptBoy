@@ -108,16 +108,16 @@ export default async function() {
     this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
     // Arrange some platforms
-    window.platforms = generatePlatforms(this);
+    this.platforms = generatePlatforms(this);
 
     // Setup the player
-    window.player = generatePlayer(this);
+    this.player = generatePlayer(this);
 
     // Add collision between player and platforms
-    this.physics.add.collider(window.player, window.platforms);
+    this.physics.add.collider(this.player, this.platforms);
 
     // Setup arrow key polling
-    window.cursors = this.input.keyboard.createCursorKeys();
+    this.cursors = this.input.keyboard.createCursorKeys();
   } catch (e) {
     throw new Error(`Could not load game assets! ${e}`);
   }

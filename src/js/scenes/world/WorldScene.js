@@ -10,6 +10,9 @@ import preload from './preload';
 export default class WorldScene extends Phaser.Scene {
   constructor() {
     super('world');
+    this.player = null;
+    this.cursors = null;
+    this.platforms = null;
   }
 
   create() {
