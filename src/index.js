@@ -5,7 +5,7 @@
  */
 import Phaser from 'phaser';
 
-import { RESOLUTION } from './js/constants';
+import { RESOLUTION, GRAVITY } from './js/constants';
 import preload from './js/scenes/preload';
 import create from './js/scenes/create';
 import update from './js/scenes/update';
@@ -22,7 +22,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
+      gravity: { y: GRAVITY },
       debug: false,
     },
   },
@@ -30,6 +30,4 @@ const config = {
 };
 
 // Initialize the game and certain globals
-window.player;
-window.platforms;
 const game = new Phaser.Game(config);

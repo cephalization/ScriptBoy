@@ -47,7 +47,6 @@ const generatePlatforms = ctx => {
     .setScale(1.2)
     .refreshBody();
   platforms.create(770, 375, 'ground');
-  platforms.create(200, 200, 'ground');
 
   return platforms;
 };
@@ -60,33 +59,36 @@ const generatePlatforms = ctx => {
 const generatePlayer = ctx => {
   // Setup player and physics
   const player = ctx.physics.add.sprite(40, 400, 'hero');
-  player.setBounce(0.1);
+  player.setBounce(0.15);
   player.setCollideWorldBounds(true);
 
-  // Setup player animations, gonna need tweaking
+  /* Setup player animations, gonna need tweaking */
   ctx.anims.create({
-    key: 'left',
-    frames: ctx.anims.generateFrameNumbers('hero', {
-      start: 1,
-      end: 2,
-      frameRate: 10,
-      repeat: -1,
-    }),
-  });
-
-  ctx.anims.create({
-    key: 'turn',
+    key: 'stand',
     frames: [{ key: 'hero', frame: 0 }],
     frameRate: 20,
   });
 
   ctx.anims.create({
-    key: 'right',
+    key: 'walk',
     frames: ctx.anims.generateFrameNumbers('hero', {
       start: 1,
       end: 2,
     }),
     frameRate: 10,
+    repeat: -1,
+  });
+
+  ctx.anims.create({
+    key: 'airborn',
+    frames: [{ key: 'hero', frame: 5 }],
+    frameRate: 10,
+  });
+
+  ctx.anims.create({
+    key: 'jump',
+    frames: [{ key: 'hero', frame: 3 }],
+    frameRate: 1,
     repeat: -1,
   });
 
