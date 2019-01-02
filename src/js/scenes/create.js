@@ -38,7 +38,7 @@ const loadAssets = async function(ctx) {
  * Statically generate some platforms to test with
  * per https://phaser.io/tutorials/making-your-first-phaser-3-game/part3
  *
- * @param {object} ctx
+ * @param {object} ctx desired 'this' to load assets into
  */
 const generatePlatforms = ctx => {
   const platforms = ctx.physics.add.staticGroup();
@@ -54,7 +54,8 @@ const generatePlatforms = ctx => {
 /**
  * Statically generate a player based off of the 'hero' sprite
  * per https://phaser.io/tutorials/making-your-first-phaser-3-game/part5
- * @param {object} ctx
+ *
+ * @param {object} ctx desired 'this' to load assets into
  */
 const generatePlayer = ctx => {
   // Setup player and physics
