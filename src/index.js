@@ -6,19 +6,13 @@
 import Phaser from 'phaser';
 
 import { RESOLUTION, GRAVITY } from './js/constants';
-import preload from './js/scenes/preload';
-import create from './js/scenes/create';
-import update from './js/scenes/update';
+import WorldScene from './js/scenes/world/WorldScene';
 
 const config = {
   type: Phaser.AUTO,
   width: RESOLUTION[0],
   height: RESOLUTION[1],
-  scene: {
-    preload,
-    create,
-    update,
-  },
+  scene: [WorldScene],
   physics: {
     default: 'arcade',
     arcade: {
@@ -29,5 +23,5 @@ const config = {
   parent: 'game',
 };
 
-// Initialize the game and certain globals
+// Initialize the game
 const game = new Phaser.Game(config);
