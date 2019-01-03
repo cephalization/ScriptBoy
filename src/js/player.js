@@ -5,45 +5,6 @@ import {
 } from '@src/js/constants';
 
 /**
- * Bind animations to the scene the player lives in and the player itself
- *
- * @param {object} scene the scene that the player has been initialized in
- */
-const setupAnimations = scene => {
-  scene.anims.create({
-    key: 'stand',
-    frames: [{ key: 'player', frame: 0 }],
-  });
-
-  scene.anims.create({
-    key: 'walk',
-    frames: scene.anims.generateFrameNumbers('player', {
-      start: 1,
-      end: 2,
-    }),
-    frameRate: 10,
-    repeat: -1,
-  });
-
-  scene.anims.create({
-    key: 'airborn',
-    frames: [{ key: 'player', frame: 5 }],
-  });
-
-  scene.anims.create({
-    key: 'jump',
-    frames: [{ key: 'player', frame: 3 }],
-    repeat: -1,
-  });
-
-  scene.anims.create({
-    key: 'double jump',
-    frames: [{ key: 'player', frame: 4 }],
-    repeat: -1,
-  });
-};
-
-/**
  * The player class
  *
  * Handles all player related information:
@@ -56,12 +17,11 @@ const setupAnimations = scene => {
  * setupAnimations() may need to be updated if the spritesheet changes and frames are reordered.
  */
 export default class Player {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, key = 'player') {
     this.scene = scene;
 
-    setupAnimations(this.scene);
     this.sprite = this.scene.physics.add
-      .sprite(x, y, 'player')
+      .sprite(x, y, key)
       .setBounce(0.15)
       .setScale(1.5)
       .setCollideWorldBounds(true);
@@ -98,6 +58,9 @@ export default class Player {
   getJumpHeight = () => this.jumpHeight;
   resetJumpHeight = () => (this.jumpHeight = JUMP_VELOCITY);
 
+  /**
+   * Check if the player is allowed to jump, also track x-jumping
+   */
   canJump = () => {
     const {
       getStatus,
@@ -124,6 +87,9 @@ export default class Player {
     return getJumpsLeft() > 0 && !getJumpLock();
   };
 
+  /**
+   * If allowed, make the player jump
+   */
   jump = () => {
     const {
       canJump,

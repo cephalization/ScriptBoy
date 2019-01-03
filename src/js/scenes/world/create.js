@@ -1,15 +1,13 @@
-import {
-  log,
-  addImportedImageToScene,
-  addImportedSpriteToScene,
-  frameDimensions,
-} from '@src/js/util';
+import { log, addImportedImageToScene } from '@src/js/util';
 
 import background from '@src/assets/images/background.png';
 import ground from '@src/assets/images/ground.png';
-import hero from '@src/assets/images/hero.png';
 
-import Player from '@src/js/player';
+import { createHeroPlayer, loadHeroAssets } from '@src/js/characters/hero';
+import {
+  createIndustrialPlayer,
+  loadIndustrialAssets,
+} from '@src/js/characters/industrial';
 
 /**
  * Asynchronously load data-uri assets into a scene
@@ -22,12 +20,10 @@ const loadAssets = async function(ctx) {
       /* Load All Assets Here */
       await addImportedImageToScene('bg', background, ctx);
       await addImportedImageToScene('ground', ground, ctx);
-      await addImportedSpriteToScene(
-        'player',
-        hero,
-        frameDimensions(36, 42),
-        ctx
-      );
+
+      // Load the two player model spritesheets
+      await loadHeroAssets(ctx);
+      await loadIndustrialAssets(ctx);
 
       log('assets loaded');
       resolve();
@@ -69,7 +65,7 @@ export default async function() {
     this.platforms = generatePlatforms(this);
 
     // Setup the player
-    this.player = new Player(this, 50, 0);
+    this.player = new createIndustrialPlayer(this, 50, 0);
 
     // Add collision between player and platforms
     this.physics.add.collider(this.player.sprite, this.platforms);
