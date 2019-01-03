@@ -24,8 +24,9 @@ const setupAnimations = (scene, key = CHARACTER_NAME) => {
       start: 0,
       end: 3,
     }),
-    frameRate: 6,
+    frameRate: 5,
     repeat: -1,
+    yoyo: true,
   });
 
   scene.anims.create({

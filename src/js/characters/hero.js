@@ -25,7 +25,7 @@ const setupAnimations = (scene, key = CHARACTER_NAME) => {
       start: 1,
       end: 3,
     }),
-    frameRate: 6,
+    frameRate: 5,
     yoyo: true,
   });
 
