@@ -61,7 +61,12 @@ export const createIndustrialPlayer = (ctx, x, y) => {
     throw new Error("Character 'industrial' assets are not loaded!");
   }
 
-  return new Player(ctx, x, y, CHARACTER_NAME);
+  // We need to adjust the hitbox of this particular sprite before returning it
+  // https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/ceea0edfc0ad1660393390b8baf0ab41f0cca87e/examples/post-2/03-drawing-platformer/js/player.js#L30-L31
+  const industry = new Player(ctx, x, y, CHARACTER_NAME);
+  industry.sprite.setSize(18, 24).setOffset(7, 9);
+
+  return industry;
 };
 
 export const loadIndustrialAssets = async ctx => {
