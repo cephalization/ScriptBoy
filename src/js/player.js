@@ -80,7 +80,7 @@ export default class Player {
   /* Human readable statuses translated from phaser properties */
   getStatus = () => ({
     // Check if the player is touching the ground
-    isGrounded: this.getBody().touching.down,
+    isGrounded: this.sprite.body.touching.down,
   });
 
   /* Functions for tracking how many times the player has jumped in air */
@@ -98,31 +98,20 @@ export default class Player {
   getJumpHeight = () => this.jumpHeight;
   resetJumpHeight = () => (this.jumpHeight = JUMP_VELOCITY);
 
-  /**
-   * Handles the players ability to jump
-   */
-  handleJumping = () => {
+  canJump = () => {
     const {
-      getControls,
-      getBody,
       getStatus,
       getJumpsLeft,
       setJumpHeight,
-      getJumpHeight,
       resetJumpHeight,
       resetJumpsLeft,
-      decrementJumpsLeft,
-      enableJumpLock,
-      disableJumpLock,
       getJumpLock,
     } = this;
     const playerStatus = getStatus();
-    const body = getBody();
-    const cursors = getControls();
 
-    // Don't duplicate jumping velocity while the up arrow is held
-    if (cursors.up.isUp) {
-      disableJumpLock();
+    // When the player hits the ground, reset the double jump counter
+    if (playerStatus.isGrounded) {
+      resetJumpsLeft();
     }
 
     // Make the second jump in a double jump shorter
@@ -132,14 +121,22 @@ export default class Player {
       resetJumpHeight();
     }
 
-    // When the player hits the ground, reset the double jump counter
-    if (playerStatus.isGrounded && !getJumpLock()) {
-      resetJumpsLeft();
-    }
+    return getJumpsLeft() > 0 && !getJumpLock();
+  };
 
-    // Control jumping, allow jumping until the player hits the ground again or there are no more
+  jump = () => {
+    const {
+      canJump,
+      getBody,
+      decrementJumpsLeft,
+      enableJumpLock,
+      getJumpHeight,
+    } = this;
+    const body = getBody();
+
+    // allow jumping until the player hits the ground again or there are no more
     // jumps left
-    if (cursors.up.isDown && !getJumpLock() && getJumpsLeft() > 0) {
+    if (canJump()) {
       decrementJumpsLeft();
       enableJumpLock();
       body.velocity.y = getJumpHeight();
@@ -181,7 +178,7 @@ export default class Player {
    * Handle the inputs to the player character and the associated animations
    */
   handleControls = () => {
-    const { getControls, sprite } = this;
+    const { getControls, sprite, jump, disableJumpLock } = this;
     const cursors = getControls();
 
     if (cursors.left.isDown) {
@@ -193,6 +190,12 @@ export default class Player {
     } else {
       sprite.setVelocityX(0);
     }
+
+    if (cursors.up.isDown) {
+      jump();
+    } else {
+      disableJumpLock();
+    }
   };
 
   /**
@@ -200,7 +203,6 @@ export default class Player {
    */
   update = () => {
     this.handleControls();
-    this.handleJumping();
     this.handleAnimations();
   };
 }
