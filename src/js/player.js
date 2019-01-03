@@ -25,6 +25,14 @@ export default class Player {
       .setBounce(0.15)
       .setScale(1.5)
       .setCollideWorldBounds(true);
+
+    this.playerAnimations = {
+      stand: `${key}_stand`,
+      walk: `${key}_walk`,
+      airborn: `${key}_airborn`,
+      jump: `${key}_jump`,
+      doubleJump: `${key}_double jump`,
+    };
   }
 
   /* Dynamic Player Information */
@@ -113,29 +121,29 @@ export default class Player {
    * Handle the animation of the player character while their velocity changes
    */
   handleAnimations = () => {
-    const { getBody, getAnims, getJumpsLeft } = this;
+    const { getBody, getAnims, getJumpsLeft, playerAnimations } = this;
     const body = getBody();
     const anims = getAnims();
     const jumpsLeft = getJumpsLeft();
 
     // While the player is moving horizontally, walk
     if (body.newVelocity.x != 0) {
-      anims.play('walk', true);
+      anims.play(playerAnimations.walk, true);
     } else {
-      anims.play('stand', true);
+      anims.play(playerAnimations.stand, true);
     }
 
     // While the player is falling show that animation
     if (body.newVelocity.y > 1) {
-      anims.play('airborn');
+      anims.play(playerAnimations.airborn);
     }
 
     // While the player is moving upwards, show jump animation
     if (body.newVelocity.y < 0) {
       if (jumpsLeft === 1) {
-        anims.play('jump');
+        anims.play(playerAnimations.jump);
       } else {
-        anims.play('double jump');
+        anims.play(playerAnimations.doubleJump);
       }
     }
   };

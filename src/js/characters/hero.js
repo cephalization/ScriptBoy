@@ -19,12 +19,12 @@ let assetsLoaded = false;
  */
 const setupAnimations = (scene, key = CHARACTER_NAME) => {
   scene.anims.create({
-    key: 'stand',
+    key: `${key}_stand`,
     frames: [{ key, frame: 0 }],
   });
 
   scene.anims.create({
-    key: 'walk',
+    key: `${key}_walk`,
     frames: scene.anims.generateFrameNumbers(key, {
       start: 1,
       end: 2,
@@ -34,18 +34,18 @@ const setupAnimations = (scene, key = CHARACTER_NAME) => {
   });
 
   scene.anims.create({
-    key: 'airborn',
+    key: `${key}_airborn`,
     frames: [{ key, frame: 5 }],
   });
 
   scene.anims.create({
-    key: 'jump',
+    key: `${key}_jump`,
     frames: [{ key, frame: 3 }],
     repeat: -1,
   });
 
   scene.anims.create({
-    key: 'double jump',
+    key: `${key}_double jump`,
     frames: [{ key, frame: 4 }],
     repeat: -1,
   });
@@ -55,7 +55,7 @@ export const createHeroPlayer = (ctx, x, y) => {
   if (!assetsLoaded) {
     throw new Error("Character 'hero' assets are not loaded!");
   }
-  setupAnimations(ctx);
+
   return new Player(ctx, x, y, CHARACTER_NAME);
 };
 
@@ -66,5 +66,6 @@ export const loadHeroAssets = async ctx => {
     frameDimensions(36, 42),
     ctx
   );
+  setupAnimations(ctx);
   assetsLoaded = true;
 };

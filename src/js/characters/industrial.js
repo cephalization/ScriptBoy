@@ -19,7 +19,7 @@ let assetsLoaded = false;
  */
 const setupAnimations = (scene, key = CHARACTER_NAME) => {
   scene.anims.create({
-    key: 'stand',
+    key: `${key}_stand`,
     frames: scene.anims.generateFrameNumbers(key, {
       start: 0,
       end: 3,
@@ -29,7 +29,7 @@ const setupAnimations = (scene, key = CHARACTER_NAME) => {
   });
 
   scene.anims.create({
-    key: 'walk',
+    key: `${key}_walk`,
     frames: scene.anims.generateFrameNumbers(key, {
       start: 8,
       end: 15,
@@ -39,18 +39,18 @@ const setupAnimations = (scene, key = CHARACTER_NAME) => {
   });
 
   scene.anims.create({
-    key: 'airborn',
+    key: `${key}_airborn`,
     frames: [{ key, frame: 15 }],
   });
 
   scene.anims.create({
-    key: 'jump',
+    key: `${key}_jump`,
     frames: [{ key, frame: 13 }],
     repeat: -1,
   });
 
   scene.anims.create({
-    key: 'double jump',
+    key: `${key}_double jump`,
     frames: [{ key, frame: 10 }],
     repeat: -1,
   });
@@ -60,7 +60,7 @@ export const createIndustrialPlayer = (ctx, x, y) => {
   if (!assetsLoaded) {
     throw new Error("Character 'industrial' assets are not loaded!");
   }
-  setupAnimations(ctx);
+
   return new Player(ctx, x, y, CHARACTER_NAME);
 };
 
@@ -71,5 +71,7 @@ export const loadIndustrialAssets = async ctx => {
     { ...frameDimensions(32, 32), margin: 1, spacing: 2 },
     ctx
   );
+
+  setupAnimations(ctx);
   assetsLoaded = true;
 };
