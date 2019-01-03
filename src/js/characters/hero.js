@@ -56,7 +56,8 @@ export const createHeroPlayer = (ctx, x, y) => {
     throw new Error("Character 'hero' assets are not loaded!");
   }
 
-  return new Player(ctx, x, y, CHARACTER_NAME);
+  // NOTE: we subtract 15 from desired y position because of the size difference between the two character sprites
+  return new Player(ctx, x, y - 15, CHARACTER_NAME);
 };
 
 export const loadHeroAssets = async ctx => {

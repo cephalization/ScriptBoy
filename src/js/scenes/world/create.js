@@ -68,9 +68,9 @@ export default async function() {
     await loadAssets(this);
     log('Rendering assets');
 
-    const setupCharacter = () => {
+    const setupCharacter = (x = 50, y = 0) => {
       // Setup the player
-      this.player = createCharacter(this, 50, 0);
+      this.player = createCharacter(this, x, y);
 
       // Add collision between player and platforms
       this.collider = this.physics.add.collider(
@@ -84,12 +84,17 @@ export default async function() {
       this.player.sprite.destroy();
     };
 
+    // Hotswap character model when spacebar is pressed
     this.input.keyboard.on(
       'keydown_SPACE',
       () => {
+        const {
+          playerMeta: { x, y },
+        } = this;
+
         toggleCharacter();
         tearDownCharacter();
-        setupCharacter();
+        setupCharacter(x, y);
       },
       this
     );
@@ -100,6 +105,7 @@ export default async function() {
     // Arrange some platforms
     this.platforms = generatePlatforms(this);
 
+    // Create default character
     setupCharacter();
 
     // Setup arrow key polling

@@ -87,7 +87,7 @@ export default class Player {
 
     // Make the second jump in a double jump shorter
     if (getJumpsLeft() < MAXIMUM_JUMPS) {
-      setJumpHeight(JUMP_VELOCITY + 60);
+      setJumpHeight(JUMP_VELOCITY + 40);
     } else {
       resetJumpHeight();
     }
@@ -173,10 +173,27 @@ export default class Player {
   };
 
   /**
+   * Track the player's position in the scene so other functions can access it
+   */
+  recordPosition = () => {
+    const {
+      sprite: { x, y },
+      scene,
+    } = this;
+
+    scene.playerMeta = {
+      ...scene.playerMeta,
+      x,
+      y,
+    };
+  };
+
+  /**
    * Perform all updates to the player on each frame
    */
   update = () => {
     this.handleControls();
     this.handleAnimations();
+    this.recordPosition();
   };
 }

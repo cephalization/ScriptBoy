@@ -12,9 +12,12 @@ export default class WorldScene extends Phaser.Scene {
     super('world');
     this.player = null;
     // Track various statuses on the player character
-    this.playerStatus = {
-      // Track which jump the character is on 'single', 'double', etc
-      jump: 'none',
+    this.playerMeta = {
+      // The player's current x position
+      x: 0,
+
+      // The player's current y position
+      y: 0,
     };
     this.cursors = null;
     this.platforms = null;
