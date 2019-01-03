@@ -8,6 +8,7 @@ import Player from '@src/js/player';
 import { addImportedSpriteToScene, frameDimensions } from '@src/js/util';
 
 import hero from '@src/assets/images/hero.png';
+import heroIdle from '@src/assets/images/hero-idle.png';
 
 const CHARACTER_NAME = 'hero';
 let assetsLoaded = false;
@@ -20,7 +21,12 @@ let assetsLoaded = false;
 const setupAnimations = (scene, key = CHARACTER_NAME) => {
   scene.anims.create({
     key: `${key}_stand`,
-    frames: [{ key, frame: 0 }],
+    frames: scene.anims.generateFrameNumbers(`${key}_idle`, {
+      start: 1,
+      end: 3,
+    }),
+    frameRate: 6,
+    yoyo: true,
   });
 
   scene.anims.create({
@@ -64,6 +70,12 @@ export const loadHeroAssets = async ctx => {
   await addImportedSpriteToScene(
     CHARACTER_NAME,
     hero,
+    frameDimensions(36, 42),
+    ctx
+  );
+  await addImportedSpriteToScene(
+    `${CHARACTER_NAME}_idle`,
+    heroIdle,
     frameDimensions(36, 42),
     ctx
   );
