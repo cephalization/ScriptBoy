@@ -67,30 +67,10 @@ export default class Player {
   resetJumpHeight = () => (this.jumpHeight = JUMP_VELOCITY);
 
   /**
-   * Check if the player is allowed to jump, also track x-jumping
+   * Check if the player is allowed to jump
    */
   canJump = () => {
-    const {
-      getStatus,
-      getJumpsLeft,
-      setJumpHeight,
-      resetJumpHeight,
-      resetJumpsLeft,
-      getJumpLock,
-    } = this;
-    const playerStatus = getStatus();
-
-    // When the player hits the ground, reset the double jump counter
-    if (playerStatus.isGrounded) {
-      resetJumpsLeft();
-    }
-
-    // Make the second jump in a double jump shorter
-    if (getJumpsLeft() < MAXIMUM_JUMPS) {
-      setJumpHeight(JUMP_VELOCITY + 40);
-    } else {
-      resetJumpHeight();
-    }
+    const { getJumpsLeft, getJumpLock } = this;
 
     return getJumpsLeft() > 0 && !getJumpLock();
   };
@@ -105,12 +85,22 @@ export default class Player {
       decrementJumpsLeft,
       enableJumpLock,
       getJumpHeight,
+      setJumpHeight,
+      resetJumpHeight,
+      getJumpsLeft,
     } = this;
     const body = getBody();
 
     // allow jumping until the player hits the ground again or there are no more
     // jumps left
     if (canJump()) {
+      // Make the next jump in a double jump shorter
+      if (getJumpsLeft() < MAXIMUM_JUMPS) {
+        setJumpHeight(JUMP_VELOCITY + 40);
+      } else {
+        resetJumpHeight();
+      }
+
       decrementJumpsLeft();
       enableJumpLock();
       body.velocity.y = getJumpHeight();
@@ -152,7 +142,16 @@ export default class Player {
    * Handle the inputs to the player character and the associated animations
    */
   handleControls = () => {
-    const { getControls, sprite, jump, disableJumpLock } = this;
+    const {
+      getControls,
+      sprite,
+      jump,
+      disableJumpLock,
+      getJumpLock,
+      getStatus,
+      resetJumpsLeft,
+      getJumpsLeft,
+    } = this;
     const cursors = getControls();
 
     if (cursors.left.isDown) {
@@ -165,9 +164,14 @@ export default class Player {
       sprite.setVelocityX(0);
     }
 
-    if (cursors.up.isDown) {
+    if (cursors.up.isDown && !getJumpLock()) {
       jump();
-    } else {
+    } else if (cursors.up.isUp) {
+      // When the player hits the ground and lets go of jump, reset the double jump counter
+      if (getStatus().isGrounded && getJumpsLeft() !== MAXIMUM_JUMPS) {
+        console.log('resetting jump');
+        resetJumpsLeft();
+      }
       disableJumpLock();
     }
   };
