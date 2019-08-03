@@ -36,7 +36,7 @@ export default class WorldScene extends Phaser.Scene {
   };
 
   // Default character
-  character = 'hero';
+  character = 'industrial';
 
   /**
    * Switch characters, toggle between 'hero' and 'industrial'
